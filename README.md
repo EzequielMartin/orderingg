@@ -1,3 +1,11 @@
+# Grupo 3
+
+## Integrantes
+
+Fontana Mac Adden, Matias
+Garcia, Agustin
+Martín, Ezequiel
+
 # Ordering
 
 Aplicación utilizada en la cursada 2018 de Ingenieria de Software. UTN-FRLP
@@ -40,6 +48,10 @@ python fixture.py
 
 ## Iniciar app
 
+`python orderingg.py`
+
+o
+
 En Linux
 
 ```bash
@@ -63,4 +75,3 @@ $env:FLASK_APP="orderingg.py"
 $env:FLASK_DEBUG="1"
 flask run
 ```
-
