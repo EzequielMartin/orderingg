@@ -16,9 +16,9 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-primary is-pulled-right" onclick="Modal.open()">
+                <button class="button is-danger is-pulled-right" onclick="Modal.open()">
                     <span class="icon"><i class="fas fa-plus"></i></span>
-                    <span>Agregar</span>
+                    <span>Agregar Producto</span>
                 </button>
             </div>
         </div>
@@ -65,10 +65,10 @@
     <!-- Template handlebars de la tabla -->
     <script id="table-template" type="text/x-handlebars-template">
         <table class="table is-fullwidth is-hoverable">
-            <thead>
+            <thead style="font-weight: bold">
                 <tr>
                     <td>ID</td>
-                    <td>Descripción</td>
+                    <td>Nombre</td>
                     <td>Precio unitario</td>
                     <td>Cantidad</td>
                     <td>Precio total</td>
