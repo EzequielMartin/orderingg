@@ -37,7 +37,7 @@
                 <section class="modal-card-body">
                     <form>
                         <div class="field">
-                            <labe class="label">Seleccionar producto</labe>
+                            <label class="label">Seleccionar producto</label>
                             <div id="select" class="control"></div>
                         </div>
 
@@ -69,21 +69,23 @@
         <table class="table is-fullwidth is-hoverable">
             <thead>
                 <tr>
-                    <th>ID</td>
-                    <th>Nombre</td>
-                    <th>Precio unitario</td>
-                    <th>Cantidad</td>
-                    <th>Precio total</td>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Precio total</th>
                 </tr>
             </thead>
             <tbody>
                 {{# each products }}
                     <tr>
                         <td>{{ id }}</td>
-                        <td>{{ description }}</td>
+			<td>{{ name }}</td> <!-- Corrijo este error ( cambio description por name ) ya que es uno de los parametros que voy a necesitar enviar para borrar el producto -->
                         <td>{{ price }}</td>
-                        <td>{{ quantity }}</td>
+			<td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+			<td><button id="botonBorrar" class="button is-danger" onclick="borrarProducto( { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}' })">Borrar</button></td> 
+			<!-- Al clickear el boton se ejecuta borrarProducto y se pasa como parametro un producto cuyos atributos son {{ id }} , {{ name }} y {{ price }} -->
                     </tr>
                 {{/ each }}
             </tbody>
@@ -112,6 +114,25 @@
     </script>
     {% endraw %}
 </body>
+
+<!-- Agrego la funcion que se va a ejecutar cuando se hace click en el boton, esta va a utilizar la funcion borrarProducto definida en la api -->
+<script>
+    function borrarProducto(producto){
+
+        API.borrarProducto(1, producto.id, producto)
+            .then(function(r) {
+                if(r.error) {
+                    console.error(r.error);
+                } else {
+                    API.getOrder().then(function (data) {
+                        refs.table.update(data);
+                    });
+		}
+            });
+    }
+
+
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
 
