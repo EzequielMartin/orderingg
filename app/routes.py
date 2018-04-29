@@ -112,3 +112,15 @@ def order_product_detail(pk_order, pk_product):
             order.products.append(order_product)
         db.session.commit()
         return jsonify(order_product.serialize)
+"""
+Creo una nueva ruta que apunta al producto de una orden y se usa el metodo HTML DELETE para asi poder eliminar productos
+"""
+@app.route("/order/<pk_order>/product/<pk_product>", methods=['DELETE'])
+def borrarProducto(pk_order, pk_product):
+
+    order_product = OrderProduct.query.filter(and_(OrderProduct.order_id==pk_order, OrderProduct.product_id==pk_product)).all()[0]
+
+    if request.method == 'DELETE':
+        db.session.delete(order_product) #Elimino elemento de la base de datos
+        db.session.commit() #Guardo los cambios en la base de datos
+        return jsonify({ 'response' : 'deleted' })
