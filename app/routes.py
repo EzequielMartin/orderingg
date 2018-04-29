@@ -123,4 +123,4 @@ def borrarProducto(pk_order, pk_product):
     if request.method == 'DELETE':
         db.session.delete(order_product) #Elimino elemento de la base de datos
         db.session.commit() #Guardo los cambios en la base de datos
-        return jsonify({ 'response' : 'deleted' })
+        return jsonify({ 'respuesta' : 'Se borro el producto' }), 200 #Tengo que retornar una respuesta sino tira error, el codigo 200 para una request de DELETE significa que se borro correctamente
