@@ -16,7 +16,7 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-danger is-pulled-right" onclick="refs.modal.open()">
+                <button class="button is-danger is-pulled-right" onclick="refs.modal.open('agregar', ' ')">
                     <span class="icon"><i class="fas fa-plus"></i></span>
                     <span>Agregar Producto</span>
                 </button>
@@ -31,20 +31,20 @@
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p id="save-title" class="modal-card-title">Agregar producto</p>
-                    <p id="edit-title" hidden class="modal-card-title">Editar producto</p>
+                    <p id="edit-title" class="modal-card-title">Editar producto</p>
                     <button class="delete" aria-label="close" onclick="refs.modal.close()"></button>
                 </header>
                 <section class="modal-card-body">
                     <form>
                         <div class="field">
-                            <labe class="label">Seleccionar producto</labe>
+                            <label class="label">Seleccionar producto</label>
                             <div id="select" class="control"></div>
                         </div>
 
                         <div class="field">
                             <label class="label">Cantidad</label>
                             <div class="control">
-                                <input id="quantity" class="input" type="number">
+                                <input id="quantity" class="input" type="number" min="0">
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                 </section>
                 <footer class="modal-card-foot">
                     <button id="save-button" class="button is-success">Guardar</button>
-                    <button id="edit-button" class="button is-warning">Editar</button>
+		    <button id="edit-button" class="button is-warning">Editar</button>
                     <button class="button" onclick="refs.modal.close()">Cancelar</button>
                 </footer>
             </div>
@@ -69,21 +69,24 @@
         <table class="table is-fullwidth is-hoverable">
             <thead>
                 <tr>
-                    <th>ID</td>
-                    <th>Nombre</td>
-                    <th>Precio unitario</td>
-                    <th>Cantidad</td>
-                    <th>Precio total</td>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Precio total</th>
                 </tr>
             </thead>
             <tbody>
                 {{# each products }}
                     <tr>
                         <td>{{ id }}</td>
-                        <td>{{ description }}</td>
+			<td>{{ name }}</td> <!-- Corrijo este error ( cambio description por name ) para que se muestren los nombres en la tabla -->
                         <td>{{ price }}</td>
-                        <td>{{ quantity }}</td>
+			<td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
+			<td><button id="botonEditar" class="button is-danger" onclick="refs.modal.open('editar', { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}', quantity: '{{ quantity }}' })">Editar</button></td>
+			<td><button id="botonBorrar" class="button is-danger" onclick="borrarProducto( { id: '{{ id }}' })">Borrar</button></td> 
+			<!-- Al clickear el boton se ejecuta borrarProducto y se pasa como parametro un producto cuyo atributo es el id {{ id }} -->
                     </tr>
                 {{/ each }}
             </tbody>
@@ -103,7 +106,7 @@
     <script id="select-template" type="text/x-handlebars-template">
         <div class="select">
             <select id="select-prod">
-                <option disabled selected value="">Seleccione un producto</option>
+                <option selected value="">Seleccione un producto</option>
                 {{# each products }}
                     <option value="{{ id }}">{{ name }}</option>
                 {{/ each }}
@@ -112,6 +115,28 @@
     </script>
     {% endraw %}
 </body>
+
+<!-- Agrego la funcion que se va a ejecutar cuando se hace click en el boton, esta va a utilizar la funcion borrarProducto definida en la api -->
+<script>
+    function borrarProducto(producto){
+
+        API.borrarProducto(1, producto.id, producto)
+            .then(function(r) {
+                if(r.error) {
+                    console.error(r.error);
+                } else {
+                    API.getOrder().then(function (data) {
+                        refs.table.update(data);
+                    });
+		}
+            });
+    }
+
+
+</script>
+
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
 

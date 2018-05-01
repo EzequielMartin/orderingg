@@ -3,16 +3,79 @@ const Modal = (function () {
     /**
      * Abre el modal
      **/
-    function open($modal) {
+    function open($modal,tipo,producto) {
         const editTitle = document.getElementById('edit-title');
         const saveTitle = document.getElementById('save-title');
         const editButton = document.getElementById('edit-button');
         const saveButton = document.getElementById('save-button');
+	const nombreproducto = document.getElementById('name-product');
 
-        $modal.classList.add('is-active');
 
-        editButton.classList.add('is-hidden');
-        editTitle.classList.add('is-hidden');
+
+	    if( tipo === 'agregar'){
+
+		editButton.classList.add('is-hidden');
+		editTitle.classList.add('is-hidden');
+		saveButton.classList.remove('is-hidden');
+		saveTitle.classList.remove('is-hidden');
+		document.getElementById('select-prod').disabled=false;    
+		
+		$modal.classList.add('is-active');    
+
+
+
+
+	    }else if( tipo === 'editar') {
+
+		saveButton.classList.add('is-hidden');
+		saveTitle.classList.add('is-hidden');
+		editTitle.classList.remove('is-hidden');
+		editButton.classList.remove('is-hidden');
+		document.getElementById('select-prod').disabled=true;    
+		document.getElementById('quantity').value=producto.quantity;
+		$modal.classList.add('is-active');    
+		    
+
+
+
+	  API.getOrderProduct(1,producto.id)
+	
+	    .then(function (ProductoElegido){        
+          document.getElementById('quantity').value=ProductoElegido["quantity"];
+          var nombreProducto;
+          nombreProducto = ProductoElegido["name"];
+          var opcion;
+          switch(nombreProducto) {
+          case "Silla":
+          opcion=1;
+          break;
+          case "Mesa":
+          opcion=2;
+          break;
+          case "Vaso":
+          opcion=3;
+          break;
+          case "Individual":
+          opcion=4;
+          break;}
+           document.getElementById("select-prod").value=opcion;
+          });
+
+
+
+
+
+	    }
+
+
+      
+
+
+
+
+
+
+
     }
 
     /**
@@ -43,6 +106,10 @@ const Modal = (function () {
 
         $modal.querySelector('#save-button')
             .addEventListener('click', config.onAddProduct);
+
+	 $modal.querySelector('#edit-button')
+              .addEventListener('click', config.onEditProduct);
+	    
 
         return {
             close: close.bind(null, $modal),

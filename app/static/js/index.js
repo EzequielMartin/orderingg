@@ -45,6 +45,7 @@
         API.addProduct(1, state.selectedProduct, state.quantity)
             .then(function (r) {
                 if (r.error) {
+		    alert('Producto duplicado');
                     console.error(r.error);
                 } else {
                     API.getOrder().then(function (data) {
@@ -56,6 +57,36 @@
             });
     }
 
+
+
+function onEditProduct() {
+     
+const productoID = document.getElementById('select-prod').value  ;
+const selectedProduct = API.getOrderProduct(1,productoID); 	
++           API.editProduct(1,productoID, state.quantity, selectedProduct)
+             .then(function (r) {
+                 if (r.error) {
+                     console.error(r.error);
+                 } else {
+                     API.getOrder().then(function (data) {
+ 
+                         refs.table.update(data);
+                         
+                     });
+ 
+                     refs.modal.close();
+                 }
+             });
+     }
+
+
+
+
+
+
+
+
+
     /**
      * Inicializa la aplicacion
      **/
@@ -65,7 +96,8 @@
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
-            onAddProduct: onAddProduct
+            onAddProduct: onAddProduct,
+	    onEditProduct: onEditProduct	
         });
 
         // Inicializamos la tabla
