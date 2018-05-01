@@ -80,13 +80,13 @@
                 {{# each products }}
                     <tr>
                         <td>{{ id }}</td>
-			<td>{{ name }}</td> <!-- Corrijo este error ( cambio description por name ) ya que es uno de los parametros que voy a necesitar enviar para borrar el producto -->
+			<td>{{ name }}</td> <!-- Corrijo este error ( cambio description por name ) para que se muestren los nombres en la tabla -->
                         <td>{{ price }}</td>
 			<td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
 			<td><button id="botonEditar" class="button is-danger" onclick="refs.modal.open('editar', { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}', quantity: '{{ quantity }}' })">Editar</button></td>
-			<td><button id="botonBorrar" class="button is-danger" onclick="borrarProducto( { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}' })">Borrar</button></td> 
-			<!-- Al clickear el boton se ejecuta borrarProducto y se pasa como parametro un producto cuyos atributos son {{ id }} , {{ name }} y {{ price }} -->
+			<td><button id="botonBorrar" class="button is-danger" onclick="borrarProducto( { id: '{{ id }}' })">Borrar</button></td> 
+			<!-- Al clickear el boton se ejecuta borrarProducto y se pasa como parametro un producto cuyo atributo es el id {{ id }} -->
                     </tr>
                 {{/ each }}
             </tbody>
