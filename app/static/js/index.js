@@ -45,6 +45,7 @@
         API.addProduct(1, state.selectedProduct, state.quantity)
             .then(function (r) {
                 if (r.error) {
+		    alert('Producto duplicado');
                     console.error(r.error);
                 } else {
                     API.getOrder().then(function (data) {
