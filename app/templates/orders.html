@@ -16,7 +16,7 @@
 
         <div class="columns">
             <div class="column is-12">
-                <button class="button is-danger is-pulled-right" onclick="refs.modal.open('agregar', ' ')">
+                <button class="button is-primary is-pulled-right" onclick="refs.modal.open('agregar', ' ')">
                     <span class="icon"><i class="fas fa-plus"></i></span>
                     <span>Agregar Producto</span>
                 </button>
@@ -84,7 +84,7 @@
                         <td>{{ price }}</td>
 			<td>{{ quantity }}</td>
                         <td>{{ totalPrice }}</td>
-			<td><button id="botonEditar" class="button is-danger" onclick="refs.modal.open('editar', { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}', quantity: '{{ quantity }}' })">Editar</button></td>
+			<td><button id="botonEditar" class="button is-warning" onclick="refs.modal.open('editar', { id: '{{ id }}', name: '{{ name }}', price: '{{ price }}', quantity: '{{ quantity }}' })">Editar</button></td>
 			<td><button id="botonBorrar" class="button is-danger" onclick="borrarProducto( { id: '{{ id }}' })">Borrar</button></td> 
 			<!-- Al clickear el boton se ejecuta borrarProducto y se pasa como parametro un producto cuyo atributo es el id {{ id }} -->
                     </tr>
