@@ -67,6 +67,16 @@ class OrderingTestCase(TestCase):
 
         self.assert200(resp, "Fallo el DELETE")
 
+    def test_name_vacio(self):
+        data = {
+            'name': '',
+            'price': 50
+        }
+
+        resp = self.client.post('/product', data=json.dumps(data), content_type='application/json')
+
+        assert resp != 200, 'Fallo el test, se creo un producto de nombre vacio'
+
 if __name__ == '__main__':
     unittest.main()
 
