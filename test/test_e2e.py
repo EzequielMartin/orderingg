@@ -65,8 +65,8 @@ class Ordering(unittest.TestCase):
         driver.get(self.baseURL)
         
         delete_product_button = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr[1]/td[6]/button[2]')
-        delete_product_button.click()   
-        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr[1]').click())
+        delete_product_button.click()
+        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, "xpath")
 
 
     def tearDown(self):
