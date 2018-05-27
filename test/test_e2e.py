@@ -39,7 +39,6 @@ class Ordering(unittest.TestCase):
         time.sleep(1)
 
         self.driver = webdriver.Chrome()
-    
 
     '''
     def test_title(self):
@@ -124,6 +123,25 @@ class Ordering(unittest.TestCase):
         cantidad_en_tabla = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr/td[4]')
         self.assertGreater(int(cantidad_en_tabla.text),0,"Agrego una cantidad negativa")
 
+    def test_infoNombreProducto(self):
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        elem_nombre = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr/td[2]')
+        nombre = elem_nombre.text
+        
+        assert nombre != '', "El nombre esta vacio"
+
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 
@@ -131,14 +149,6 @@ class Ordering(unittest.TestCase):
         db.drop_all()
         self.driver.close()
         self.app_context.pop()
-
-
-    
-
-
-
-
-
 
 if __name__ == "__main__":
     unittest.main()
