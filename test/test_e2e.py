@@ -64,9 +64,10 @@ class Ordering(unittest.TestCase):
 
         driver = self.driver
         driver.get(self.baseURL)
-        
+        time.sleep(5)        
         delete_product_button = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr[1]/td[6]/button[2]')
         delete_product_button.click()
+        time.sleep(5)
         self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, "xpath")
 
     def test_InfoModalEditar(self):
@@ -118,9 +119,11 @@ class Ordering(unittest.TestCase):
         cantidad_ingresada.send_keys(str(cant))
         time.sleep(10)
         boton_guardar = driver.find_element_by_xpath('//*[@id="save-button"]')
+        time.sleep(10)
         boton_guardar.click()
-        time.sleep(20) 
+        time.sleep(10)
         cantidad_en_tabla = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr/td[4]')
+        time.sleep(10)
         self.assertGreater(int(cantidad_en_tabla.text),0,"Agrego una cantidad negativa")
     
     def test_infoNombreProducto(self):
