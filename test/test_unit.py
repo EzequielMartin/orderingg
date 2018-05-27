@@ -36,7 +36,7 @@ class OrderingTestCase(TestCase):
         data = json.loads(resp.data)
 
         assert len(data) == 0, "La base de datos tiene productos"
-
+    '''
     def test_crear_producto(self):
         data = {
             'name': 'Tenedor',
@@ -51,6 +51,40 @@ class OrderingTestCase(TestCase):
 
         # Verifica que en la lista de productos haya un solo producto
         self.assertEqual(len(p), 1, "No hay productos")
+    '''
+    def test_put(self):
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Plato', price= 15)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+        data = {
+            'quantity': 10
+        }
+        self.client.put('order/1/product/1', data=json.dumps(data), content_type='application/json')
+        arg = 1,1
+        prod = OrderProduct.query.get(arg)
+        self.assertTrue(prod.quantity == 10, "Fallo el PUT")
+        #self.assert200(resp, "Fallo el PUT")
+
+    def test_OrderPrice(self): 
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Plato', price= 15)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 10, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+        
+        orden= Order.query.get(1)
+        totalPrice = orden.orderPrice
+        self.assertEqual(150, totalPrice, "El precio total no se calcula bien")        
 
     def test_delete(self):
         o = Order(id= 1)
