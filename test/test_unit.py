@@ -111,6 +111,18 @@ class OrderingTestCase(TestCase):
 
         assert resp != 200, 'Fallo el test, se creo un producto de nombre vacio'
 
+    def test_get_product(self):
+        p = Product(id=1, name='Tenedor', price=50)
+        db.session.add(p)
+        db.session.commit()
+
+        resp = self.client.get('/product')
+
+        self.assert200(resp, "Fallo el GET")
+
+    #El Ejercicio 1C de los opcionales es el mismo que el 2A de los obligatorios, ya esta realizado en este mismo archivo
+
+
 if __name__ == '__main__':
     unittest.main()
 

@@ -37,7 +37,7 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Firefox()
 
     '''
     def test_title(self):
@@ -96,6 +96,25 @@ class Ordering(unittest.TestCase):
         boton_cerrar_modal.click()
         self.assertTrue(value_prod != "", "No tiene informacion")
         self.assertTrue(value_cant != "", "No tiene informacion")
+
+    def test_infoNombreProducto(self):
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        driver = self.driver
+        driver.get(self.baseURL)
+        
+        elem_nombre = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr/td[2]')
+        nombre = elem_nombre.text
+        
+        assert elem_nombre.text != '', "El nombre esta vacio"
 
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
