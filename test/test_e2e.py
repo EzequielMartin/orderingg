@@ -148,6 +148,36 @@ class Ordering(unittest.TestCase):
         
         self.assertTrue(nombre != '',"El nombre esta vacio")
 
+    
+    def test_alertaRepetido(self):
+        o = Order(id= 1)
+        db.session.add(o)
+
+        p = Product(id= 1, name= 'Tenedor', price= 50)
+        db.session.add(p)
+
+        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderProduct)
+        db.session.commit()
+
+        driver = self.driver
+        driver.get(self.baseURL)
+
+        time.sleep(5)
+
+        boton_agregar_producto = driver.find_element_by_xpath('/html/body/main/div[1]/div/button')
+        boton_agregar_producto.click()
+        seleccionar_producto = driver.find_element_by_id('select-prod')
+        seleccionar_producto.click()
+        opcion_seleccionada = driver.find_element_by_xpath('//*[@id="select-prod"]/option[2]')
+        opcion_seleccionada.click()
+        boton_guardar = driver.find_element_by_xpath('//*[@id="save-button"]')
+        boton_guardar.click()
+        time.sleep(5)
+        alerta_repetido = driver.find_element_by_xpath('//*[@id="select"]/p')
+        time.sleep(5)
+        self.assertTrue(alerta_repetido.is_displayed(), "No se muestra la alerta")
+
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 

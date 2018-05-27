@@ -155,7 +155,15 @@ class OrderingTestCase(TestCase):
         self.assert200(resp, "Fallo el GET")
 
     #El Ejercicio 1C de los opcionales es el mismo que el 2A de los obligatorios, ya esta realizado en este mismo archivo
+    
+    def test_get_order(self):
+        o = Order(id=1)
+        db.session.add(o)
+        db.session.commit()
 
+        resp = self.client.get('/order/1')
+
+        self.assert200(resp, "Fallo el GET")
 
 if __name__ == '__main__':
     unittest.main()
