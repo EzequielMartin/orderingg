@@ -69,7 +69,6 @@ class OrderingTestCase(TestCase):
         arg = 1,1
         prod = OrderProduct.query.get(arg)
         self.assertTrue(prod.quantity == 10, "Fallo el PUT")
-        #self.assert200(resp, "Fallo el PUT")
 
     def test_OrderPrice(self): 
         o = Order(id= 1)
@@ -123,7 +122,6 @@ class OrderingTestCase(TestCase):
         db.session.add(orderProduct)
         db.session.commit()            
 
-
         respuesta = self.client.get('order/1/product/1')
         self.assert200(respuesta, "Fallo el GET")
 
@@ -146,8 +144,6 @@ class OrderingTestCase(TestCase):
 
         resp = self.client.get('order/1/product/3') 
         self.assert200(resp,"Fallo el test") 
-
-
 
 if __name__ == '__main__':
     unittest.main()

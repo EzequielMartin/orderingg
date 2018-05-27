@@ -4,11 +4,8 @@ import time
 import threading
 
 from selenium import webdriver
-<<<<<<< HEAD
 from selenium.common.exceptions import NoSuchElementException
-=======
 from selenium.webdriver.common.keys import Keys 
->>>>>>> test/#2_Get
 
 from app import create_app, db
 from app.models import Product, Order, OrderProduct
@@ -52,7 +49,6 @@ class Ordering(unittest.TestCase):
         add_product_button.click()
         modal = driver.find_element_by_id('modal')
         assert modal.is_displayed(), "El modal no esta visible"
-<<<<<<< HEAD
     '''
     
     def test_delete(self):
@@ -102,7 +98,6 @@ class Ordering(unittest.TestCase):
         boton_cerrar_modal.click()
         self.assertTrue(value_prod != "", "No tiene informacion")
         self.assertTrue(value_cant != "", "No tiene informacion")
-=======
     
     def test_cant_negativo(self):
         orden = Order(id= 1)
@@ -128,8 +123,6 @@ class Ordering(unittest.TestCase):
         time.sleep(20) 
         cantidad_en_tabla = driver.find_element_by_xpath('//*[@id="orders"]/table/tbody/tr/td[4]')
         self.assertGreater(int(cantidad_en_tabla.text),0,"Agrego una cantidad negativa")
-
->>>>>>> test/#2_Get
 
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
