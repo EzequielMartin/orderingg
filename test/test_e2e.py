@@ -38,7 +38,7 @@ class Ordering(unittest.TestCase):
 
         time.sleep(1)
 
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Firefox()
 
     ''' 
     def test_title(self):
@@ -118,7 +118,7 @@ class Ordering(unittest.TestCase):
         opcion_seleccionada = driver.find_element_by_xpath('//*[@id="select-prod"]/option[2]')
         opcion_seleccionada.click()
         cantidad_ingresada = driver.find_element_by_xpath('//*[@id="quantity"]')
-        cantidad_ingresada.send_keys(Keys.DELETE)
+        cantidad_ingresada.send_keys(Keys.BACK_SPACE)
         cant = -20 #Lo uso para probar cantidades negativas y positivas
         cantidad_ingresada.send_keys(str(cant))
         time.sleep(10)
