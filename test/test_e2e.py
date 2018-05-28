@@ -72,11 +72,8 @@ class Ordering(unittest.TestCase):
         botonBorrar.click()
         time.sleep(10)
 
-        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, '//*[@id="orders"]/table/tbody/tr')
-        self.driver.close() 
-
-    
-        
+        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, '//*[@id="orders"]/table/tbody/tr') 
+ 
     def test_InfoModalEditar(self):
         o = Order(id= 1)
         db.session.add(o)
