@@ -51,7 +51,8 @@ class Ordering(unittest.TestCase):
     '''
     
     def test_delete(self):
-
+        
+        #Por algun motivo este test corre bien en Firefox pero en Chrome nunca me cierra la ventana del navegador
         o = Order(id= 1)
         db.session.add(o)
 
@@ -64,12 +65,18 @@ class Ordering(unittest.TestCase):
 
         driver = self.driver
         driver.get(self.baseURL)
-        time.sleep(5)        
-        delete_product_button = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr[1]/td[6]/button[2]')
-        delete_product_button.click()
-        time.sleep(5)
-        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, "xpath")
+        
+        time.sleep(10)
+        botonBorrar = driver.find_element_by_xpath('/html/body/main/div[2]/div/table/tbody/tr[1]/td[6]/button[2]')
+        time.sleep(10)
+        botonBorrar.click()
+        time.sleep(10)
 
+        self.assertRaises(NoSuchElementException, driver.find_element_by_xpath, '//*[@id="orders"]/table/tbody/tr')
+        self.driver.close() 
+
+    
+        
     def test_InfoModalEditar(self):
         o = Order(id= 1)
         db.session.add(o)
@@ -177,7 +184,8 @@ class Ordering(unittest.TestCase):
         alerta_repetido = driver.find_element_by_xpath('//*[@id="select"]/p')
         time.sleep(5)
         self.assertTrue(alerta_repetido.is_displayed(), "No se muestra la alerta")
-
+     
+    
     def tearDown(self):
         self.driver.get('http://localhost:5000/shutdown')
 
