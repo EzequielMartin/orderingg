@@ -30,13 +30,13 @@ class OrderingTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
- 
+    '''
     def test_iniciar_sin_productos(self):
         resp = self.client.get('/product')
         data = json.loads(resp.data)
 
         assert len(data) == 0, "La base de datos tiene productos"
-    '''
+    
     def test_crear_producto(self):
         data = {
             'name': 'Tenedor',
@@ -97,18 +97,21 @@ class OrderingTestCase(TestCase):
         db.session.commit()
         
         resp = self.client.delete('order/1/product/1')
+        q = db.session.query(OrderProduct.product_id).filter_by(order_id=1) #Busco todos los ids de productos de la orden de id = 1
 
         self.assert200(resp, "Fallo el DELETE")
-
+        self.assertNotIn(p.id,q,"Fallo el DELETE") #Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos. 
+    
+   #Rehago el test de nombre vacio agregando directamente el producto a la db. 
+    
     def test_name_vacio(self):
-        data = {
-            'name': '',
-            'price': 50
-        }
+        p = Product(id= 1,name = '', price= 15)
+        db.session.add(p)
+        db.session.commit()
 
-        resp = self.client.post('/product', data=json.dumps(data), content_type='application/json')
+        productos = Product.query.all()
 
-        assert resp != 200, 'Fallo el test, se creo un producto de nombre vacio'
+        assert len(productos) == 0, "Se agrego un producto con nombre vacio" #El test no pasa ya que un bug en el backend permite que se agreguen productos con nombre vacio
 
     def test_get(self):
 
@@ -146,13 +149,14 @@ class OrderingTestCase(TestCase):
         self.assert200(resp,"Fallo el test") 
 
     def test_get_product(self):
-        p = Product(id=1, name='Tenedor', price=50)
+        p = Product(id=1, name='Vaso', price=50)
         db.session.add(p)
         db.session.commit()
 
-        resp = self.client.get('/product')
-
-        self.assert200(resp, "Fallo el GET")
+        productos = self.client.get('/product')
+        
+        self.assert200(productos, "Fallo el GET")
+        assert productos.json[0] == {'id': 1, 'name': 'Vaso', 'price': 50.0}, "Fallo el GET" #Me fijo que el json que me devuelve el get tenga los datos esperados, que tenga id 1, nombre vaso y precio 50
 
     #El Ejercicio 1C de los opcionales es el mismo que el 2A de los obligatorios, ya esta realizado en este mismo archivo
     
@@ -161,9 +165,10 @@ class OrderingTestCase(TestCase):
         db.session.add(o)
         db.session.commit()
 
-        resp = self.client.get('/order/1')
+        orden = self.client.get('/order/1')
 
-        self.assert200(resp, "Fallo el GET")
+        self.assert200(orden, "Fallo el GET")
+        assert orden.json == {'id': 1, 'orderPrice': 0, 'products': []}, "Fallo el GET" #Me fijo que el json que me devuelve tenga los datos esperados, en mi caso es una orden de id 1 vacia ( sin productos y por consiguiente con precio total de la orden 0 )
 
 if __name__ == '__main__':
     unittest.main()
