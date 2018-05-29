@@ -30,13 +30,13 @@ class OrderingTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
- 
+    '''
     def test_iniciar_sin_productos(self):
         resp = self.client.get('/product')
         data = json.loads(resp.data)
 
         assert len(data) == 0, "La base de datos tiene productos"
-    '''
+    
     def test_crear_producto(self):
         data = {
             'name': 'Tenedor',
@@ -97,23 +97,12 @@ class OrderingTestCase(TestCase):
         db.session.commit()
         
         resp = self.client.delete('order/1/product/1')
-        q = db.session.query(OrderProduct.product_id).filter_by(order_id=1) #Busco todos los ids de la orden de id = 1
+        q = db.session.query(OrderProduct.product_id).filter_by(order_id=1) #Busco todos los ids de productos de la orden de id = 1
 
         self.assert200(resp, "Fallo el DELETE")
         self.assertNotIn(p.id,q,"Fallo el DELETE") #Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos. 
     
-    '''
-    def test_name_vacio(self):
-        data = {
-            'name': '',
-            'price': 50
-        }
-
-        resp = self.client.post('/product', data=json.dumps(data), content_type='application/json')
-
-        assert resp != 200, 'Fallo el test, se creo un producto de nombre vacio'
-    '''
-   #Rehago el test de nombre vacio agregando directamente el producto a la db y sin usar post. 
+   #Rehago el test de nombre vacio agregando directamente el producto a la db. 
     
     def test_name_vacio(self):
         p = Product(id= 1,name = '', price= 15)
@@ -158,16 +147,6 @@ class OrderingTestCase(TestCase):
 
         resp = self.client.get('order/1/product/3') 
         self.assert200(resp,"Fallo el test") 
-    '''
-    def test_get_product(self):
-        p = Product(id=1, name='Tenedor', price=50)
-        db.session.add(p)
-        db.session.commit()
-
-        resp = self.client.get('/product')
-
-        self.assert200(resp, "Fallo el GET")
-    '''
 
     def test_get_product(self):
         p = Product(id=1, name='Vaso', price=50)
