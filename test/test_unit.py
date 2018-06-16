@@ -9,6 +9,7 @@ from app.models import Product, Order, OrderProduct
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 class OrderingTestCase(TestCase):
     def create_app(self):
         config_name = 'testing'
@@ -36,7 +37,7 @@ class OrderingTestCase(TestCase):
         data = json.loads(resp.data)
 
         assert len(data) == 0, "La base de datos tiene productos"
-    
+
     def test_crear_producto(self):
         data = {
             'name': 'Tenedor',
@@ -53,14 +54,14 @@ class OrderingTestCase(TestCase):
         self.assertEqual(len(p), 1, "No hay productos")
     '''
     def test_put(self):
-        o = Order(id= 1)
+        o = Order(id=1)
         db.session.add(o)
 
         p = Product(id= 1, name= 'Plato', price= 15)
         db.session.add(p)
 
-        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
-        db.session.add(orderProduct)
+        orderproduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        db.session.add(orderproduct)
         db.session.commit()
         data = {
             'quantity': 10
@@ -81,7 +82,7 @@ class OrderingTestCase(TestCase):
         db.session.add(orderProduct)
         db.session.commit()
         
-        orden= Order.query.get(1)
+        orden = Order.query.get(1)
         totalPrice = orden.orderPrice
         self.assertEqual(150, totalPrice, "El precio total no se calcula bien")        
 
@@ -97,10 +98,10 @@ class OrderingTestCase(TestCase):
         db.session.commit()
         
         resp = self.client.delete('order/1/product/1')
-        q = db.session.query(OrderProduct.product_id).filter_by(order_id=1) #Busco todos los ids de productos de la orden de id = 1
+        q = db.session.query(OrderProduct.product_id).filter_by(order_id=1)  # Busco todos los ids de productos de la orden de id = 1
 
         self.assert200(resp, "Fallo el DELETE")
-        self.assertNotIn(p.id,q,"Fallo el DELETE") #Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos. 
+        self.assertNotIn(p.id, q, "Fallo el DELETE") #Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos. 
     
    #Rehago el test de nombre vacio agregando directamente el producto a la db. 
     
@@ -127,7 +128,6 @@ class OrderingTestCase(TestCase):
 
         respuesta = self.client.get('order/1/product/1')
         self.assert200(respuesta, "Fallo el GET")
-
 
     def test_cantidad_negativa(self):
         
