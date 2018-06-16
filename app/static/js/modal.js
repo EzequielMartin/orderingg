@@ -8,12 +8,12 @@ const Modal = (function () {
             this.$el = context.querySelector(config.el);
 
             // Nos ponemos a escuchar cambios en el input de cantidad
-            this.$el.addEventListener('input', () => {
+            this.$el.addEventListener("input", () => {
                 if (this.validate()) {
                     config.onChangeQunatity(this.$el.value);
                 }
 
-                this.toggleError()
+                this.toggleError();
             });
 
 
@@ -44,10 +44,10 @@ const Modal = (function () {
          **/
         toggleError: function () {
             const $errorQuantity = this.$el.parentElement
-                .querySelector('.help');
+                .querySelector(".help");
 
-            this.$el.classList.toggle('is-danger', !this.isValid);
-            $errorQuantity.classList.toggle('is-hidden', this.isValid);
+            this.$el.classList.toggle("is-danger", !this.isValid);
+            $errorQuantity.classList.toggle("is-hidden", this.isValid);
         }
     };
 
@@ -56,21 +56,21 @@ const Modal = (function () {
      **/
     function init(config) {
         const $modal = document.querySelector(config.el);
-        const $edit = $modal.querySelector('#edit-button');
-        const $save = $modal.querySelector('#save-button');
+        const $edit = $modal.querySelector("#edit-button");
+        const $save = $modal.querySelector("#save-button");
 
         // Inicializamos el input de cantidad
         const $quantity = Quantity.init({
-            el: '#quantity',
+            el: "#quantity",
             onChangeQunatity: function (quantity) {
                 toggleButtons();
-                config.onChangeQunatity(quantity)
+                config.onChangeQunatity(quantity);
             }
         }, $modal);
 
         // Inicializamos el select de productos
         const $select = Select.init({
-            el: '#select',
+            el: "#select",
             data: config.products,
             onSelect: function (product) {
                 toggleButtons();
