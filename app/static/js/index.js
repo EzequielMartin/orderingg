@@ -95,36 +95,6 @@
             });
     }
 
-
-
-function onEditProduct() {
-     
-const productoID = document.getElementById('select-prod').value  ;
-const selectedProduct = API.getOrderProduct(1,productoID); 	
-+           API.editProduct(1,productoID, state.quantity, selectedProduct)
-             .then(function (r) {
-                 if (r.error) {
-                     console.error(r.error);
-                 } else {
-                     API.getOrder().then(function (data) {
- 
-                         refs.table.update(data);
-                         
-                     });
- 
-                     refs.modal.close();
-                 }
-             });
-     }
-
-
-
-
-
-
-
-
-
     /**
      * Inicializa la aplicacion
      **/
