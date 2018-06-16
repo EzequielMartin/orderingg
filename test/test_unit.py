@@ -71,7 +71,7 @@ class OrderingTestCase(TestCase):
         prod = OrderProduct.query.get(arg)
         self.assertTrue(prod.quantity == 10, "Fallo el PUT")
 
-    def test_orderprice(self): 
+    def test_orderprice(self):
         o = Order(id=1)
         db.session.add(o)
 
@@ -87,24 +87,24 @@ class OrderingTestCase(TestCase):
         self.assertEqual(150, totalprice, "El precio total no se calcula bien")
 
     def test_delete(self):
-        o = Order(id= 1)
+        o = Order(id=1)
         db.session.add(o)
 
-        p = Product(id= 1, name= 'Tenedor', price= 50)
+        p = Product(id=1, name='Tenedor', price=50)
         db.session.add(p)
 
-        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
-        db.session.add(orderProduct)
+        orderproduct = OrderProduct(order_id=1, product_id=1, quantity=1, product=p)
+        db.session.add(orderproduct)
         db.session.commit()
-        
+
         resp = self.client.delete('order/1/product/1')
         q = db.session.query(OrderProduct.product_id).filter_by(order_id=1)  # Busco todos los ids de productos de la orden de id = 1
 
         self.assert200(resp, "Fallo el DELETE")
-        self.assertNotIn(p.id, q, "Fallo el DELETE") # Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos. 
-    
-   #Rehago el test de nombre vacio agregando directamente el producto a la db. 
-    
+        self.assertNotIn(p.id, q, "Fallo el DELETE")  # Agrego un assert que checkea que el producto p de id = 1 ya no esta en la base de datos.
+
+    # Rehago el test de nombre vacio agregando directamente el producto a la db.
+
     def test_name_vacio(self):
         p = Product(id= 1,name = '', price= 15)
         db.session.add(p)
