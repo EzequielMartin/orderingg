@@ -57,10 +57,10 @@ class OrderingTestCase(TestCase):
         o = Order(id=1)
         db.session.add(o)
 
-        p = Product(id= 1, name= 'Plato', price= 15)
+        p = Product(id=1, name='Plato', price=15)
         db.session.add(p)
 
-        orderproduct = OrderProduct(order_id= 1, product_id= 1, quantity= 1, product= p)
+        orderproduct = OrderProduct(order_id=1, product_id=1, quantity=1, product=p)
         db.session.add(orderproduct)
         db.session.commit()
         data = {
@@ -71,20 +71,20 @@ class OrderingTestCase(TestCase):
         prod = OrderProduct.query.get(arg)
         self.assertTrue(prod.quantity == 10, "Fallo el PUT")
 
-    def test_OrderPrice(self): 
+    def test_orderprice(self): 
         o = Order(id= 1)
         db.session.add(o)
 
         p = Product(id= 1, name= 'Plato', price= 15)
         db.session.add(p)
 
-        orderProduct = OrderProduct(order_id= 1, product_id= 1, quantity= 10, product= p)
-        db.session.add(orderProduct)
+        orderproduct = OrderProduct(order_id=1, product_id=1, quantity=10, product=p)
+        db.session.add(orderproduct)
         db.session.commit()
-        
+
         orden = Order.query.get(1)
         totalPrice = orden.orderPrice
-        self.assertEqual(150, totalPrice, "El precio total no se calcula bien")        
+        self.assertEqual(150, totalPrice, "El precio total no se calcula bien")
 
     def test_delete(self):
         o = Order(id= 1)

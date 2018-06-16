@@ -1,5 +1,5 @@
 (function () {
-    const $totalPrice = document.querySelector('#total-price');
+    const $totalPrice = document.querySelector("#total-price");
 
     // Estado de la aplicacion
     const state = {
@@ -7,9 +7,9 @@
         selectedProduct: null,
         quantity: 0,
         order: API.getOrder()
-    }
+    };
 
-    const refs = {}
+    const refs = {};
 
     /**
      * Actualiza el valor del precio total
@@ -17,9 +17,9 @@
     function updateTotalPrice() {
         try {
             const totalPrice = state.selectedProduct.price * state.quantity;
-            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`
+            $totalPrice.innerHTML = `Precio total: $ ${totalPrice}`;
         } catch (e) {
-            $totalPrice.innerHTML = '';
+            $totalPrice.innerHTML = "";
         }
     }
 
@@ -85,7 +85,7 @@
         API.deleteProduct(1, productId)
             .then(function (r) {
                 if (r.error) {
-		    alert('Producto duplicado');
+			alert("Producto duplicado");
                     console.error(r.error);
                 } else {
                     API.getOrder().then(function (data) {
@@ -100,7 +100,7 @@
      **/
     function init() {
         refs.modal = Modal.init({
-            el: '#modal',
+            el: "#modal",
             products: state.products,
             onProductSelect: onProductSelect,
             onChangeQunatity: onChangeQunatity,
@@ -116,10 +116,10 @@
 
         refs.global = {
             onDeleteProduct
-        }
+        };
     }
 
     init();
     window.refs = refs;
-})()
+})();
 
