@@ -136,17 +136,15 @@ class OrderingTestCase(TestCase):
 
         producto = Product(id= 3, name= 'Cuchillo', price= 59)
         db.session.add(producto)
+ 
+        orderProducto = OrderProduct(order_id= 1, product_id= 3, quantity= -1, product= producto)
+        db.session.add(orderProducto)
+        db.session.commit()
 
-        cant= 1 #Uso cantidad negativa para verificar que no se crea la instancia, si pongo una cantidad positiva el test pasa correctamente 
-        if cant > 0: 
-            orderProducto = OrderProduct(order_id= 1, product_id= 3, quantity= cant, product= producto)
-            db.session.add(orderProducto)
-            db.session.commit()
-        else:
-            print ("No se puede crear instancia con cantidad negativa")
-
-        resp = self.client.get('order/1/product/3') 
-        self.assert200(resp,"Fallo el test") 
+        arg = 1,3
+        orderProd = OrderProduct.query.get(arg)
+        cantidad = orderProd.quantity
+        assert cantidad > 0, "Fallo el GET" #El test falla porque un bug en el backend permite agregar un producto con cantidad negativa 
 
     def test_get_product(self):
         p = Product(id=1, name='Vaso', price=50)
